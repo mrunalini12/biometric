@@ -2,36 +2,40 @@ pipeline {
     agent any
 
     stages {
-        stage('Voice Authentication') {
+        stage('Prepare Environment') {
             steps {
                 script {
-                    def result = sh(script: 'python3 voice_auth.py', returnStatus: true)
-                    if (result != 0) {
-                        error("Voice authentication failed!")
-                    }
+                    // Create a virtual environment
+                    sh 'python3 -m venv venv'
+                    
+                    // Activate the virtual environment and install packages
+                    sh '''
+                        source venv/bin/activate
+                        pip install speechrecognition opencv-python
+                    '''
                 }
             }
         }
-
-        stage('Iris Authentication') {
+        stage('Run Voice Authentication') {
             steps {
                 script {
-                    def result = sh(script: 'python3 iris_auth.py', returnStatus: true)
-                    if (result != 0) {
-                        error("Iris authentication failed!")
-                    }
+                    // Activate the virtual environment and run the script
+                    sh '''
+                        source venv/bin/activate
+                        python3 voice_auth.py
+                    '''
                 }
             }
         }
-
-        stage('Build') {
+        stage('Run Iris Authentication') {
             steps {
-                echo 'Building the project...'
-                // Replace the following steps with your actual build steps
-                sh 'echo "Compiling the code..."'
-                sh 'echo "Running tests..."'
-                sh 'echo "Creating artifacts..."'
-                sh 'echo "Deploying the application..."'
+                script {
+                    // Activate the virtual environment and run the script
+                    sh '''
+                        source venv/bin/activate
+                        python3 iris_auth.py
+                    '''
+                }
             }
         }
     }
