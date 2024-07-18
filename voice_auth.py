@@ -1,4 +1,4 @@
-import speech_recognition as sr
+import speechrecognition as sr
 
 def authenticate_voice():
     recognizer = sr.Recognizer()
