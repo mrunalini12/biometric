@@ -5,13 +5,17 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 script {
+                    // Install system dependencies
+                    sh 'sudo apt-get update'
+                    sh 'sudo apt-get install -y python3-pip portaudio19-dev'
+
                     // Create a virtual environment
                     sh 'python3 -m venv venv'
                     
                     // Activate the virtual environment and install packages
                     sh '''
                         source venv/bin/activate
-                        pip install speechrecognition opencv-python
+                        pip install speechrecognition opencv-python pyaudio
                     '''
                 }
             }
