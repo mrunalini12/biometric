@@ -7,7 +7,7 @@ pipeline {
                 script {
                     // Install system dependencies
                     sh 'sudo apt-get update'
-                    sh 'sudo apt-get install -y python3-pip portaudio19-dev'
+                    sh 'sudo apt-get install -y python3-pip python3-venv portaudio19-dev'
 
                     // Create a virtual environment
                     sh 'python3 -m venv venv'
